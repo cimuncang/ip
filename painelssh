@@ -1,0 +1,35 @@
+#!/bin/bash
+apt-get update -y
+apt-get install nano -y
+apt-get install zip -y
+apt-get install apache2 php5 php5-cli php5-mysql libapache2-mod-php5 php5-curl curl mysql-server-5.5  mysql-client-5.5 phpmyadmin
+cd /etc/apache2
+rm ports.conf
+wget https://raw.githubusercontent.com/PAR4NA/painel/master/ports.conf
+/etc/init.d/apache2 restart
+useradd -m -d /home/apache -s /bin/bash apache
+passwd apache
+mkdir /home/apache/.sudopass
+nano /home/apache/.sudopass/sudopass.secret
+apt-get update -y  
+apt-get install squid3 -y
+cd /etc/squid3
+wget https://raw.githubusercontent.com/PAR4NA/painel/master/squid3.zip
+unzip squid3.zip
+rm squid3.zip
+/etc/init.d/squid3 restart
+service ssh restart
+service squid3 restart
+service ssh restart
+service squid3 restart
+/etc/init.d/apache2 restart
+mysql -h localhost -u root -proot -e "CREATE DATABASE painel"
+cd /var
+wget https://raw.githubusercontent.com/PAR4NA/painel/master/matriz.sh
+cd /var/www
+wget https://raw.githubusercontent.com/PAR4NA/painel/master/painelssh.zip
+unzip painelssh.zip
+rm painelssh.zip index.html
+rm index.html
+clear
+echo -e "\033[1;31mPAINEL SSH INSTALADO COM SUCESSO AGORA IMPORTE O ARQUIVO PAINEL SQL NO PHPMYADMIN.\033[0m"
